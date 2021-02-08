@@ -28,4 +28,8 @@ public:
 	/// <param name="argc"></param>
 	/// <param name="argv"></param>
 	Params(int argc, char* argv[]);
+	/// <summary>
+	/// Drukuje pomoc, do strumienia standardowego
+	/// </summary>
+	static void printHelp();
 };

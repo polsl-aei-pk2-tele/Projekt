@@ -1,18 +1,18 @@
 ﻿#include "Params.h"
 #include <string>
 #include <iostream>
-
+using namespace std;
 
 /// <summary>
 /// Tworzy nowy obiekt typu Params, konwertuje parametry wprowadzone do programu
 /// </summary>
 Params::Params(int argc, char* argv[])
 {
-	std::string switches[4] = { "-i","-o","-r","-c" }; //Flagi akceptowane przez nas
+	std::string switches[5] = { "-i","-o","-r","-c","-h" }; //Flagi akceptowane przez nas
 	int i = 1;
 	while (i < argc)
 	{
-		for (int j = 0; j < 4; j++)
+		for (int j = 0; j < 5; j++)
 		{
 			if (switches[j].compare(argv[i]) == 0)
 			{
@@ -36,6 +36,9 @@ Params::Params(int argc, char* argv[])
 				case 3: //-c compress mode
 					mode = 'C';
 					break;
+				case 4:
+					Params::printHelp();
+					break;
 				default:
 					throw std::invalid_argument("Błędna flaga");
 				}
@@ -50,3 +53,8 @@ Params::Params(int argc, char* argv[])
 		throw std::invalid_argument("Brak flagi bądź parametru flagi -i");
 }
 
+
+void Params::printHelp()
+{
+	std::cout << "-h - drukuje ten panel pomocy\n-i [ścieżka do pliku] - WYMAGANY - ścieżka do pliku, który ma zostać odczytany\n-o [ścieżka do pliku] - WYMAGANY - ścieżka w której zostanie zapisany rezultat kompresji/dekompresji\n-r - DOMYŚLNY - przełącza aplikację w tryb odczytu/dekompresji\n-c - przełącza aplikację w tryb kompresji" << endl;
+}
