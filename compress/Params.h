@@ -32,4 +32,5 @@ public:
 	/// Drukuje pomoc, do strumienia standardowego
 	/// </summary>
 	static void printHelp();
+	bool help = false;
 };

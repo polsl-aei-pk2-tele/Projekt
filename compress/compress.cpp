@@ -17,6 +17,9 @@ int main(int argc, char* argv[]) {
 	try
 	{
 		Params p = Params(argc, argv); //Parse parametrów 
+		if (p.help)
+			return 0;
+
 		//Odczyt z pliku 
 		std::ifstream fileStream(p.inputPath);
 		std::stringstream buff;
@@ -39,8 +42,7 @@ int main(int argc, char* argv[]) {
 	}
 	catch (const std::exception& e)
 	{
-		cerr << e.what() << endl;
-		Params::printHelp();
+		cerr << endl << e.what() << endl;
 	}
 	
 }
