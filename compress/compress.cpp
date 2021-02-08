@@ -1,4 +1,4 @@
-// compress.cpp : This file contains the 'main' function. Program execution begins and ends there.
+﻿// compress.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
 #include <iostream>
@@ -11,27 +11,35 @@ using namespace std;
 
 int main(int argc, char* argv[]) {
 
-	if (argc == 1)
+	if (argc == 1) //jeśli użytkownik nie podał żadnych parametrów -> wyjdź
 		return 1;
 
-
-	Params p = Params(argc, argv);
-	std::cout << p.inputPath << p.outputPath << p.mode << std::endl;
-
-
-	LZ78Compressor cmp = LZ78Compressor();
-
-	std::ifstream fileStream(p.inputPath);
-	std::stringstream buff;
-	buff << fileStream.rdbuf();
-	string data = buff.str();
-	cout << data << endl;
-	string comp = cmp.compress(data);
-
-	cout << comp << endl;
-
-	string decomp = cmp.decompress(comp);
-	cout << decomp << endl;
+	try
+	{
+		Params p = Params(argc, argv); //Parse parametrów 
+		//Odczyt z pliku 
+		std::ifstream fileStream(p.inputPath);
+		std::stringstream buff;
+		buff << fileStream.rdbuf();
+		string data = buff.str();
 
 
+		ICompressor* cmp = new LZ78Compressor();
+		string d = "";
+
+		if (p.mode == 'C')
+			d = cmp->compress(data);
+
+		if (p.mode == 'R')
+			d = cmp->decompress(data);
+
+		//zapis do pliku
+		ofstream outputStream;
+		outputStream.open(p.outputPath);
+		outputStream << d;
+	}
+	catch (string e)
+	{
+		cout << e;
+	}
 }

@@ -1,6 +1,6 @@
 #pragma once
 #include "ICompressor.h"
-class LZ78Compressor : ICompressor
+class LZ78Compressor : public ICompressor
 {
 
 private:

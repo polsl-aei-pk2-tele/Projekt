@@ -19,4 +19,6 @@ public:
 	/// <param name="input">Ciąg wejściowy</param>
 	/// <returns>Ciąg zdekompresowany</returns>
 	virtual std::string decompress(std::string output) = 0;
+
+	~ICompressor() {};
 };

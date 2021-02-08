@@ -1,13 +1,14 @@
-#include "Params.h"
+﻿#include "Params.h"
 #include <string>
 #include <iostream>
 
 
-
-
+/// <summary>
+/// Tworzy nowy obiekt typu Params, konwertuje parametry wprowadzone do programu
+/// </summary>
 Params::Params(int argc, char* argv[])
 {
-	std::string switches[4] = { "-i","-o","-r","-c" };
+	std::string switches[4] = { "-i","-o","-r","-c" }; //Flagi akceptowane przez nas
 	int i = 1;
 	while (i < argc)
 	{
@@ -15,30 +16,28 @@ Params::Params(int argc, char* argv[])
 		{
 			if (switches[j].compare(argv[i]) == 0)
 			{
-				//switch found
 				switch (j)
 				{
-				case 0:  //input flag
-					//get next token
-					i++;
+				case 0: //-i input 
+					i++;//Przejdź do następnego parametru
 					inputPath = argv[i];
 					break;
-				case 1: //output flag
-					//get next token
-					i++;
+				case 1: //-o output
+					i++; //Przejdź do następnego parametru
 					outputPath = argv[i];
 					break;
-				case 2:
+				case 2: //-r read mode
 					mode = 'R';
 					break;
-				case 3:
+				case 3: //-c compress mode
 					mode = 'C';
 					break;
 				default:
-					throw "Unexpected switch/undefined statement";
+					throw "Błędna flaga";
 				}
 			}
 		}
 		i++;
 	}
 }
+
