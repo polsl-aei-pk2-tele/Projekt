@@ -20,10 +20,14 @@ Params::Params(int argc, char* argv[])
 				{
 				case 0: //-i input 
 					i++;//Przejdź do następnego parametru
+					if (i >= argc)
+						throw std::out_of_range("Za mało parametrów");
 					inputPath = argv[i];
 					break;
 				case 1: //-o output
 					i++; //Przejdź do następnego parametru
+					if (i >= argc)
+						throw std::out_of_range("Za mało parametrów");
 					outputPath = argv[i];
 					break;
 				case 2: //-r read mode
@@ -33,11 +37,16 @@ Params::Params(int argc, char* argv[])
 					mode = 'C';
 					break;
 				default:
-					throw "Błędna flaga";
+					throw std::invalid_argument("Błędna flaga");
 				}
 			}
 		}
 		i++;
 	}
+
+	if (outputPath.empty())
+		throw std::invalid_argument("Brak flaga bądź parametru flagi -o");
+	if (inputPath.empty())
+		throw std::invalid_argument("Brak flaga bądź parametru flagi -i");
 }
 

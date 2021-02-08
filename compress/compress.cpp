@@ -23,14 +23,13 @@ int main(int argc, char* argv[]) {
 		buff << fileStream.rdbuf();
 		string data = buff.str();
 
-
 		ICompressor* cmp = new LZ78Compressor();
 		string d = "";
 
-		if (p.mode == 'C')
+		if (p.mode == 'C') //compress mode
 			d = cmp->compress(data);
 
-		if (p.mode == 'R')
+		if (p.mode == 'R') //read mode
 			d = cmp->decompress(data);
 
 		//zapis do pliku
@@ -38,8 +37,9 @@ int main(int argc, char* argv[]) {
 		outputStream.open(p.outputPath);
 		outputStream << d;
 	}
-	catch (string e)
+	catch (const std::exception& e)
 	{
-		cout << e;
+		cerr << e.what() << endl;
 	}
+	
 }

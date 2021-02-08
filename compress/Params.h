@@ -10,11 +10,11 @@ public:
 	/// <summary>
 	/// Ścieżka zapisu rezultatu
 	/// </summary>
-	std::string outputPath = ""; 
+	std::string outputPath; 
 	/// <summary>
 	/// Ścieżka pliku do odczytu
 	/// </summary>
-	std::string inputPath = "";
+	std::string inputPath;
 	/// <summary>
 	/// Tryb pracy programu
 	/// Możliwe ustawienia

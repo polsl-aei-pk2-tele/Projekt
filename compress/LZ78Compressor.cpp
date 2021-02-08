@@ -39,7 +39,7 @@ string LZ78Compressor::compress(string input)
 			}
 
 			if (n >= 65535) //Wyjątek kiedy przekraczamy maksymalną wielkość słownika
-				throw "Exceeded maximum dictionary size";
+				throw std::out_of_range("Exceeded maximum dictionary size");
 
 			n++;
 			c = "";
