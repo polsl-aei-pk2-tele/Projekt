@@ -16,7 +16,7 @@ string LZ78Compressor::compress(string input)
 	map<string, unsigned int> dictionary; //Słownik mapujący ciągi 
 	string result = ""; //output
 	string c = "";
-	unsigned int n = 1; //65535 możliwych wartości w słowniku
+	unsigned int n = 1; // 4,294,967,295 możliwych wartości w słowniku
 
 	for (unsigned int i = 0; i < input.length(); ++i)
 	{
@@ -51,8 +51,8 @@ string LZ78Compressor::compress(string input)
 /// <summary>
 /// Dokonuje dekompresji algorytmem LZ78
 /// Uwaga:
-/// - Maksymalny rozmiar słownika to 65535, gdy zostanie przekroczony, wyrzucony zostanie wyjątek
-/// - Zakłada, że długość kodu jest równa 3
+/// - Maksymalny rozmiar słownika to 4,294,967,295, gdy zostanie przekroczony, wyrzucony zostanie wyjątek
+/// - Zakłada, że długość kodu jest równa 5
 /// </summary>
 /// <param name="input"></param>
 /// <returns></returns>
@@ -85,10 +85,10 @@ string LZ78Compressor::decompress(string input)
 }
 
 /// <summary>
-/// Zamienia unsigned short na 2 bajty i przechowuje je jako string
+/// Zamienia unsigned int na 4 bajty i przechowuje je jako string
 /// </summary>
-/// <param name="input">ushort który zostanie zkonwertowany</param>
-/// <returns>string o rozmiarze 2, każda litera jest jednym z bajtów shorta</returns>
+/// <param name="input">uint który zostanie zkonwertowany</param>
+/// <returns>string o rozmiarze 4, każda litera jest jednym z bajtów int</returns>
 string LZ78Compressor::intToString(unsigned int input)
 {
 	unsigned char r[4];
@@ -101,10 +101,10 @@ string LZ78Compressor::intToString(unsigned int input)
 }
 
 /// <summary>
-/// Zamienia dwuznakowy string na unsigned short, wszystkie pozostałe znaki nie wpłyną na wynik (liczą się tylko dwa pierwsze)
+/// Zamienia czteroznakowy string na unsigned int, wszystkie pozostałe znaki nie wpłyną na wynik (liczą się tylko cztery pierwsze)
 /// </summary>
 /// <param name="input">string który ma zostać przekonwertowany</param>
-/// <returns>unsigned short utworzony z dwóch pierwszych liter ciągu</returns>
+/// <returns>unsigned int utworzony z czterech pierwszych liter ciągu</returns>
 unsigned int LZ78Compressor::stringToInt(string input)
 {
 	//wyjaśnienie: przesuń 24 bitów z input 1 w prawo, wtedy dostajemy 32 bitową wartość (w naszych komputerach teraz mamy wartości 64 bitowe, wiec nie musimy się bać o wyjście/przewinięcie poza komórkę), dodajemy pozostałe 8 bitów z input[0] używając OR
