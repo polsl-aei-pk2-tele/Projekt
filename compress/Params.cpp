@@ -45,8 +45,8 @@ Params::Params(int argc, char* argv[])
 	}
 
 	if (outputPath.empty())
-		throw std::invalid_argument("Brak flaga bądź parametru flagi -o");
+		throw std::invalid_argument("Brak flagi bądź parametru flagi -o");
 	if (inputPath.empty())
-		throw std::invalid_argument("Brak flaga bądź parametru flagi -i");
+		throw std::invalid_argument("Brak flagi bądź parametru flagi -i");
 }
 

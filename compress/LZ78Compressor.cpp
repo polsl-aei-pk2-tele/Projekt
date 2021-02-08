@@ -7,16 +7,16 @@ using namespace std;
 /// <summary>
 /// Dokonuje kompresji, używając algorytmu LZ78
 /// Uwaga:
-/// - Maksymalny rozmiar słownika to 65535, gdy zostanie przekroczony, wyrzucony zostanie wyjątek
+/// - Maksymalny rozmiar słownika to 4,294,967,295, gdy zostanie przekroczony, wyrzucony zostanie wyjątek
 /// </summary>
 /// <param name="input">Ciąg znaków, który ma zostać zakodowany</param>
 /// <returns>Zakodowany ciąg znaków</returns>
 string LZ78Compressor::compress(string input)
 {
-	map<string, unsigned short> dictionary; //Słownik mapujący ciągi 
+	map<string, unsigned int> dictionary; //Słownik mapujący ciągi 
 	string result = ""; //output
-	string c = "";			
-	unsigned short n = 1; //65535 możliwych wartości w słowniku
+	string c = "";
+	unsigned int n = 1; //65535 możliwych wartości w słowniku
 
 	for (unsigned int i = 0; i < input.length(); ++i)
 	{
@@ -25,20 +25,20 @@ string LZ78Compressor::compress(string input)
 		{
 			c = c + s;
 		}
-		else 
+		else
 		{
 			if (c.empty()) //symbol s jeszcze nie występuje w słowniku
 			{
-				result.append(shortToString(0) + s);
-				dictionary.insert(pair<string, unsigned short>(s, n));
+				result.append(intToString(0) + s);
+				dictionary.insert(pair<string, unsigned int>(s, n));
 			}
 			else
 			{	//c jest w słowniku, dodajemy c + s 
-				result.append(shortToString(dictionary[c]) + s);
-				dictionary.insert(pair<string, unsigned short>(c + s, n));
+				result.append(intToString(dictionary[c]) + s);
+				dictionary.insert(pair<string, unsigned int>(c + s, n));
 			}
 
-			if (n >= 65535) //Wyjątek kiedy przekraczamy maksymalną wielkość słownika
+			if (n >= 4294967295) //Wyjątek kiedy przekraczamy maksymalną wielkość słownika
 				throw std::out_of_range("Exceeded maximum dictionary size");
 
 			n++;
@@ -58,25 +58,25 @@ string LZ78Compressor::compress(string input)
 /// <returns></returns>
 string LZ78Compressor::decompress(string input)
 {
-	map<unsigned short, string> dictionary; //Słownik mapujący ciągi 
+	map<unsigned int, string> dictionary; //Słownik mapujący ciągi 
 	string result = ""; //output
-	unsigned short n = 1;
+	unsigned int n = 1;
 
-	for (unsigned int i = 0; i < input.length(); i += 3) //wiemy, że nasz program koduje po 3 bajty (2 z klucza, 1 z symbolu)
+	for (unsigned int i = 0; i < input.length(); i += 5) //wiemy, że nasz program koduje po 5 bajtów (4 z klucza, 1 z symbolu)
 	{
-		unsigned short k = stringToShort(string(1, input[i]) + string(1, input[i + 1]));
-		string s = string(1, input[i + 2]);
+		unsigned int k = stringToInt(input.substr(i, 4));
+		string s = string(1, input[i + 4]);
 
 		if (k == 0)
 		{
 			result.append(s);
-			dictionary.insert(pair<unsigned short, string>(n, s));
+			dictionary.insert(pair<unsigned int, string>(n, s));
 			n++;
 		}
 		else
 		{
 			result.append(dictionary[k] + s);
-			dictionary.insert(pair<unsigned short, string>(n, dictionary[k] + s));
+			dictionary.insert(pair<unsigned int, string>(n, dictionary[k] + s));
 			n++;
 		}
 	}
@@ -89,13 +89,15 @@ string LZ78Compressor::decompress(string input)
 /// </summary>
 /// <param name="input">ushort który zostanie zkonwertowany</param>
 /// <returns>string o rozmiarze 2, każda litera jest jednym z bajtów shorta</returns>
-string LZ78Compressor::shortToString(unsigned short input)
+string LZ78Compressor::intToString(unsigned int input)
 {
-	unsigned char r[2];
+	unsigned char r[4];
 	r[0] = (unsigned char)input & 0xff; //zabierz tylnią część (AND z 256)
 	//(w AND musimy mieć jedynki na obu miejscach, żeby dokonać kopii. 0xff -> 256 a więc 1111 1111, wykonując AND wszystkie jedynki z input przenoszą się do wyniku.
 	r[1] = (unsigned char)(input >> 8) & 0xff; //przesuń 8 bitów w prawo, i znowu zabierz tylnią część (AND z 256)
-	return string(1, r[0]) + string(1, r[1]); //zwróć wartość
+	r[2] = (unsigned char)(input >> 16) & 0xff; //przesuń 8 bitów w prawo, i znowu zabierz tylnią część (AND z 256)
+	r[3] = (unsigned char)(input >> 24) & 0xff; //przesuń 8 bitów w prawo, i znowu zabierz tylnią część (AND z 256)
+	return string((char*)r, 4); //zwróć wartość
 }
 
 /// <summary>
@@ -103,10 +105,10 @@ string LZ78Compressor::shortToString(unsigned short input)
 /// </summary>
 /// <param name="input">string który ma zostać przekonwertowany</param>
 /// <returns>unsigned short utworzony z dwóch pierwszych liter ciągu</returns>
-unsigned short LZ78Compressor::stringToShort(string input)
+unsigned int LZ78Compressor::stringToInt(string input)
 {
-	//wyjaśnienie: przesuń 8 bitów z input 1 w prawo, wtedy dostajemy 16 bitową wartość, dodajemy pozostałe 8 bitów z input[0] używając OR
+	//wyjaśnienie: przesuń 24 bitów z input 1 w prawo, wtedy dostajemy 32 bitową wartość (w naszych komputerach teraz mamy wartości 64 bitowe, wiec nie musimy się bać o wyjście/przewinięcie poza komórkę), dodajemy pozostałe 8 bitów z input[0] używając OR
 	//w OR jedynki zawsze się przenoszą.
-	return (unsigned short)(((unsigned char)input[1] << 8) | 
-		(unsigned char)input[0]); 
+	return (unsigned short)(((unsigned char)input[3] << 24) | ((unsigned char)input[2] << 16) | ((unsigned char)input[1] << 8) |
+		(unsigned char)input[0]);
 }
