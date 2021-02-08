@@ -140,6 +140,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="compress.cpp" />
+    <ClCompile Include="Params.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ICompressor.h" />
+    <ClInclude Include="Params.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
