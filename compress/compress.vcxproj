@@ -140,11 +140,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="compress.cpp" />
+    <ClCompile Include="LZ78Compressor.cpp" />
     <ClCompile Include="Params.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ICompressor.h" />
+    <ClInclude Include="LZ78Compressor.h" />
     <ClInclude Include="Params.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="test1.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

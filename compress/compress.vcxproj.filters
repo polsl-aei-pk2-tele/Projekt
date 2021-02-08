@@ -21,6 +21,9 @@
     <ClCompile Include="Params.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="LZ78Compressor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Params.h">
@@ -29,5 +32,13 @@
     <ClInclude Include="ICompressor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="LZ78Compressor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="test1.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>
