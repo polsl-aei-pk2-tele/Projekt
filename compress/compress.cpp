@@ -20,8 +20,9 @@ int main(int argc, char* argv[]) {
 		if (p.help)
 			return 0;
 
+
 		//Odczyt z pliku 
-		std::ifstream fileStream(p.inputPath);
+		std::ifstream fileStream(p.inputPath, ios::binary);
 		std::stringstream buff;
 		buff << fileStream.rdbuf();
 		string data = buff.str();
@@ -35,9 +36,9 @@ int main(int argc, char* argv[]) {
 		if (p.mode == 'R') //read mode
 			d = cmp->decompress(data);
 
-		//zapis do pliku
+
 		ofstream outputStream;
-		outputStream.open(p.outputPath);
+		outputStream.open(p.outputPath, ios::binary);
 		outputStream << d;
 	}
 	catch (const std::exception& e)

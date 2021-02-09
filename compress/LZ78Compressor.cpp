@@ -15,10 +15,10 @@ string LZ78Compressor::compress(string input)
 {
 	map<string, unsigned int> dictionary; //Słownik mapujący ciągi 
 	string result = ""; //output
-	string c = "";
+	string c;
 	unsigned int n = 1; // 4,294,967,295 możliwych wartości w słowniku
 
-	for (unsigned int i = 0; i < input.length(); ++i)
+	for (unsigned int i = 0; i <= input.length(); i++)
 	{
 		string s = std::string(1, input[i]);
 		if (dictionary.count(c + s)) //kontener map, posiada w sobie unikalne wartości kluczy, count więc będzie zwracało 1 jeśli wartość istnieje i analogicznie 0 
@@ -42,7 +42,7 @@ string LZ78Compressor::compress(string input)
 				throw std::out_of_range("Exceeded maximum dictionary size");
 
 			n++;
-			c = "";
+			c.clear();
 		}
 	}
 	return result;
@@ -61,6 +61,7 @@ string LZ78Compressor::decompress(string input)
 	map<unsigned int, string> dictionary; //Słownik mapujący ciągi 
 	string result = ""; //output
 	unsigned int n = 1;
+
 
 	for (unsigned int i = 0; i < input.length(); i += 5) //wiemy, że nasz program koduje po 5 bajtów (4 z klucza, 1 z symbolu)
 	{
