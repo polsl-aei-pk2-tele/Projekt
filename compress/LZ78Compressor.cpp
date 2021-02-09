@@ -18,6 +18,9 @@ string LZ78Compressor::compress(string input)
 	string c;
 	unsigned int n = 1; // 4,294,967,295 możliwych wartości w słowniku
 
+	if (input.empty())
+		return "";
+
 	for (unsigned int i = 0; i <= input.length(); i++)
 	{
 		string s = std::string(1, input[i]);
@@ -61,11 +64,15 @@ string LZ78Compressor::decompress(string input)
 	map<unsigned int, string> dictionary; //Słownik mapujący ciągi 
 	string result = ""; //output
 	unsigned int n = 1;
-
+	if (input.empty())
+		return "";
 
 	for (unsigned int i = 0; i < input.length(); i += 5) //wiemy, że nasz program koduje po 5 bajtów (4 z klucza, 1 z symbolu)
 	{
-		unsigned int k = stringToInt(input.substr(i, 4));
+		if (i + 3 >= input.length())
+			break;
+
+		unsigned int k = stringToInt(string(1, input[i]) + string(1, input[i + 1]) + string(1, input[i + 2]) + string(1, input[i + 3]));
 		string s = string(1, input[i + 4]);
 
 		if (k == 0)
@@ -82,7 +89,7 @@ string LZ78Compressor::decompress(string input)
 		}
 	}
 
-	return result;
+	return result.substr(0, result.size() - 1);;
 }
 
 /// <summary>
