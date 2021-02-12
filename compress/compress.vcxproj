@@ -149,9 +149,8 @@
     <ClInclude Include="Params.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="test5.txt" />
     <Text Include="test1.txt" />
-    <Text Include="test2.txt" />
-    <Text Include="test4.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

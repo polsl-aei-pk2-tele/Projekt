@@ -27,23 +27,27 @@ int main(int argc, char* argv[]) {
 		buff << fileStream.rdbuf();
 		string data = buff.str();
 
+
 		ICompressor* cmp = new LZ78Compressor();
 		string d = "";
+		ofstream outputStream;
 
 		if (p.mode == 'C') //compress mode
 			d = cmp->compress(data);
+
 
 		if (p.mode == 'R') //read mode
 			d = cmp->decompress(data);
 
 
-		ofstream outputStream;
-		outputStream.open(p.outputPath, ios::binary);
-		outputStream << d;
+
+		outputStream.open(p.outputPath, std::ios::out | ios::binary );
+		outputStream.write(d.c_str(), static_cast<std::streamsize>(sizeof(char)) * d.size());
+
 	}
 	catch (const std::exception& e)
 	{
 		cerr << endl << e.what() << endl;
 	}
-	
+
 }
